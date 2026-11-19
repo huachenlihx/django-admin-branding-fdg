@@ -1,0 +1,16 @@
+{% extends "admin/login.html" %}
+{% load admin_branding %}
+
+{% block content_title %}
+{% branding_url "LOGIN_LOGO" as logo %}
+{% if logo %}
+{% branding "LOGIN_LOGO_ALT" as alt %}
+{% branding "SITE_HEADER" as header %}
+{% branding "LOGIN_LOGO_MAX_WIDTH" as width %}
+<div style="text-align: center; padding: 16px 0 8px 0;">
+  <img src="{{ logo }}" alt="{{ alt|default:header|default:site_header }}"
+       style="max-width: {{ width }}; height: auto;">
+</div>
+{% endif %}
+{{ block.super }}
+{% endblock %}

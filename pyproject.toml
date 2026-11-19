@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "django-admin-branding-fdg"
+version = "0.1.0"
+description = "Brand the Django admin: custom header/title, a logo on the login page, and a favicon, all from one setting."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Hua Chen", email = "huachenlihx@gmail.com" }]
+keywords = ["django", "admin", "branding", "login", "favicon", "logo"]
+dependencies = ["Django>=5.2"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Web Environment",
+    "Framework :: Django",
+    "Framework :: Django :: 5.2",
+    "Framework :: Django :: 6.0",
+    "Framework :: Django :: 6.1",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Internet :: WWW/HTTP",
+]
+
+[project.urls]
+Homepage = "https://github.com/huachenlihx/django-admin-branding-fdg"
+Repository = "https://github.com/huachenlihx/django-admin-branding-fdg"
+Issues = "https://github.com/huachenlihx/django-admin-branding-fdg/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+django_admin_branding = ["templates/admin/*.html"]
