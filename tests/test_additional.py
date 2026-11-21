@@ -65,3 +65,17 @@ class AuthenticatedAdminTests(TestCase):
         response = self.client.get("/favicon.ico")
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response["Location"], "/media/site-icon.ico")
+
+
+class ThemeToggleTests(TestCase):
+    """The branding override must keep Django's theme toggle on the login page."""
+
+    def test_login_page_has_theme_toggle(self):
+        response = self.client.get("/admin/login/")
+        self.assertContains(response, 'class="theme-toggle"')
+
+    @override_settings(ADMIN_BRANDING={"SITE_HEADER": "Acme Admin"})
+    def test_toggle_present_with_custom_header(self):
+        response = self.client.get("/admin/login/")
+        self.assertContains(response, "Acme Admin")
+        self.assertContains(response, 'class="theme-toggle"')

@@ -7,3 +7,5 @@ build/
 dist/
 .DS_Store
 token.txt
+README*.md
+!README.md

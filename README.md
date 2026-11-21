@@ -2,7 +2,7 @@
 
 **Distribution:** `django-admin-branding-fdg`  
 **Python import:** `django_admin_branding`  
-**Version:** `0.1.0`  
+**Version:** `0.1.1`  
 **License:** MIT
 
 Customize the look of Django's built-in admin without copying branding templates between projects. Configure the admin header, browser title, a logo above the login form, and a favicon in one `ADMIN_BRANDING` setting.
@@ -20,7 +20,7 @@ Customize the look of Django's built-in admin without copying branding templates
 - Python 3.10 or newer.
 - Django 5.2 or newer, subject to the Python requirements of the installed Django version.
 
-The package declares support for Django 5.2, 6.0, and 6.1. **Declaring compatibility does not mean every version combination has been tested.** See [Development and release checks](#development-and-release-checks) and [RELEASE.md](RELEASE.md) before releasing or deploying.
+The package declares support for Django 5.2, 6.0, and 6.1. Choose a Django version compatible with your Python version.
 
 ## Quick start
 
@@ -31,12 +31,6 @@ python -m pip install django-admin-branding-fdg
 ```
 
 The distribution name has the `-fdg` suffix, but the Python import and Django app name remain `django_admin_branding`.
-
-Before the first public release, install from a local checkout instead:
-
-```bash
-python -m pip install -e .
-```
 
 **2. Configure `settings.py`**
 
@@ -154,34 +148,10 @@ Check that the logo and favicon URLs load in a browser after deployment. If an i
 
 **A custom `AdminSite` has different header text:** When `SITE_HEADER` or `SITE_TITLE` is unset, the templates use the current admin site's context value. Setting these options overrides that fallback.
 
-## Development and release checks
-
-Clone or extract the entire project. With a supported Python version:
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate  # macOS/Linux
-python -m pip install --upgrade pip 'setuptools>=77' build twine
-python -m pip install -e .
-python -m django test --settings=tests.settings
-python -m build
-python -m twine check dist/*
-```
-
-The tests need Django to be installed. Run them against each Python/Django version combination you intend to claim as tested; also test in a real production-style project, particularly when using customized admin templates or static storage.
-
-For detailed release instructions, including TestPyPI and versioning, see [RELEASE.md](RELEASE.md). Do not publish until the runtime tests and distribution checks pass.
-
-## Screenshots
-
-Screenshots are not bundled in this release. A before-and-after example can be added once a public demo is available; no placeholder or broken image links are included here.
-
 ## Project links
 
 - Source repository: [GitHub](https://github.com/huachenlihx/django-admin-branding-fdg)
 - Issues and feature requests: [GitHub Issues](https://github.com/huachenlihx/django-admin-branding-fdg/issues)
-
-These links assume the repository is published under the shown name on the `main` branch.
 
 ## Contact
 
