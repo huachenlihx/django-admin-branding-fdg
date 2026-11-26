@@ -14,6 +14,12 @@ DEFAULTS = {
     "LOGIN_LOGO_MAX_WIDTH": "220px",
     # Favicon: same rules as LOGIN_LOGO. Used for <link rel="icon"> and /favicon.ico
     "FAVICON": None,
+    # Optional login-page footer. Each entry is a distinct line of trusted HTML.
+    # Empty by default, so existing installations show no custom footer.
+    "FOOTER_LINES": [],
+    # Unset colors inherit Django admin header's light/dark theme CSS variables.
+    "FOOTER_BACKGROUND_COLOR": None,
+    "FOOTER_TEXT_COLOR": None,
 }
 
 

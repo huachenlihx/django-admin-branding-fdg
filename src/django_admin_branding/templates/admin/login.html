@@ -14,3 +14,41 @@
 {% endif %}
 {{ block.super }}
 {% endblock %}
+
+{# Show a footer on the login page only; no footer is added on authenticated admin pages. #}
+{% block extrastyle %}
+{{ block.super }}
+<style>
+  .login .fdg-admin-footer {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 14px 20px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.6;
+  }
+  .login .fdg-admin-footer-line + .fdg-admin-footer-line {
+    margin-top: 3px;
+  }
+  .login .fdg-admin-footer a {
+    color: inherit;
+    text-decoration: underline;
+  }
+</style>
+{% endblock %}
+
+{% block footer %}
+{% branding "FOOTER_LINES" as footer_lines %}
+{% if footer_lines %}
+{% branding "FOOTER_BACKGROUND_COLOR" as footer_bg %}
+{% branding "FOOTER_TEXT_COLOR" as footer_text %}
+<div id="footer" class="fdg-admin-footer"
+     style="background-color: {{ footer_bg|default:'var(--header-bg, #417690)' }}; color: {{ footer_text|default:'var(--header-color, #fff)' }};">
+  {% for line in footer_lines %}
+  <div class="fdg-admin-footer-line">{{ line|safe }}</div>
+  {% endfor %}
+</div>
+{% else %}
+{{ block.super }}
+{% endif %}
+{% endblock %}

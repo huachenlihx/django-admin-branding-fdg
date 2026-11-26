@@ -79,3 +79,53 @@ class ThemeToggleTests(TestCase):
         response = self.client.get("/admin/login/")
         self.assertContains(response, "Acme Admin")
         self.assertContains(response, 'class="theme-toggle"')
+
+
+class LoginFooterTests(TestCase):
+    """An optional footer must be restricted to the admin login page."""
+
+    @override_settings(ADMIN_BRANDING={})
+    def test_no_footer_by_default(self):
+        response = self.client.get("/admin/login/")
+        self.assertNotContains(response, 'class="fdg-admin-footer"')
+
+    @override_settings(ADMIN_BRANDING={"FOOTER_LINES": []})
+    def test_empty_footer_is_hidden(self):
+        response = self.client.get("/admin/login/")
+        self.assertNotContains(response, 'class="fdg-admin-footer"')
+
+    @override_settings(ADMIN_BRANDING={
+        "FOOTER_LINES": [
+            "© 2026 Example Ltd.",
+            'Built by <a href="https://example.com/"><strong>Example</strong></a>',
+            "Third line",
+        ],
+    })
+    def test_footer_lines_and_trusted_html(self):
+        response = self.client.get("/admin/login/")
+        self.assertContains(response, 'class="fdg-admin-footer"')
+        self.assertContains(response, "© 2026 Example Ltd.")
+        self.assertContains(response, '<a href="https://example.com/"><strong>Example</strong></a>', html=False)
+        self.assertContains(response, "Third line")
+        self.assertContains(response, 'class="fdg-admin-footer-line"', count=3)
+        self.assertContains(response, 'var(--header-bg, #417690)')
+        self.assertContains(response, 'var(--header-color, #fff)')
+
+    @override_settings(ADMIN_BRANDING={
+        "FOOTER_LINES": ["Company footer"],
+        "FOOTER_BACKGROUND_COLOR": "#123456",
+        "FOOTER_TEXT_COLOR": "#ffffff",
+    })
+    def test_explicit_footer_colors(self):
+        response = self.client.get("/admin/login/")
+        self.assertContains(response, 'background-color: #123456; color: #ffffff;')
+
+    @override_settings(ADMIN_BRANDING={"FOOTER_LINES": ["Public login only"]})
+    def test_authenticated_admin_has_no_footer(self):
+        user = get_user_model().objects.create_superuser(
+            username="footer-admin", email="footer@example.com", password="test-password-123"
+        )
+        self.client.force_login(user)
+        response = self.client.get("/admin/")
+        self.assertNotContains(response, "Public login only")
+        self.assertNotContains(response, 'class="fdg-admin-footer"')

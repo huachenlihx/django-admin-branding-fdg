@@ -2,10 +2,10 @@
 
 **Distribution:** `django-admin-branding-fdg`  
 **Python import:** `django_admin_branding`  
-**Version:** `0.1.1`  
+**Version:** `0.2.0`  
 **License:** MIT
 
-Customize the look of Django's built-in admin without copying branding templates between projects. Configure the admin header, browser title, a logo above the login form, and a favicon in one `ADMIN_BRANDING` setting.
+Customize the look of Django's built-in admin without copying branding templates between projects. Configure the admin header, browser title, a logo above the login form, a favicon, and an optional HTML footer on the admin login page in one `ADMIN_BRANDING` setting.
 
 **Features**
 
@@ -13,6 +13,7 @@ Customize the look of Django's built-in admin without copying branding templates
 - Optional logo on the admin login page, with configurable alt text and maximum width.
 - Favicon links on admin pages and an optional `/favicon.ico` redirect.
 - Static-file paths, absolute paths, and external/CDN URLs for images.
+- Optional multi-line HTML footer on the login page with header-matching theme colors by default.
 - No extra runtime dependencies beyond Django.
 
 ## Requirements
@@ -54,6 +55,14 @@ ADMIN_BRANDING = {
     "LOGIN_LOGO_ALT": "My Company",
     "LOGIN_LOGO_MAX_WIDTH": "220px",
     "FAVICON": "images/favicon.png",
+    # Optional login-page footer: omit or leave empty to hide it.
+    "FOOTER_LINES": [
+        "© 2026 My Company | London, ON, Canada",
+        'Website Development by <a href="https://example.com/">My Company</a>',
+    ],
+    # Optional; omit to follow Django's admin header colors in light/dark mode.
+    # "FOOTER_BACKGROUND_COLOR": "#417690",
+    # "FOOTER_TEXT_COLOR": "#ffffff",
 }
 
 # If images are in your project-level static/ directory:
@@ -104,6 +113,9 @@ Start your application and visit `/admin/login/` to see the branding. Every `ADM
 | `LOGIN_LOGO_ALT` | Site header fallback | Accessible alternative text for the logo |
 | `LOGIN_LOGO_MAX_WIDTH` | `"220px"` | CSS `max-width` for the login logo |
 | `FAVICON` | `None` | Icon URL used in admin `<link>` tags and by `/favicon.ico` |
+| `FOOTER_LINES` | `[]` | Ordered list of footer lines displayed on the **login page only**; each entry may contain trusted HTML (e.g. `<a>`, `<strong>`) |
+| `FOOTER_BACKGROUND_COLOR` | Unset | Footer background; by default uses `var(--header-bg, #417690)` and follows Django's light/dark theme |
+| `FOOTER_TEXT_COLOR` | Unset | Footer text color; by default uses `var(--header-color, #fff)` and follows Django's light/dark theme |
 
 Example with only a header and title:
 
@@ -113,6 +125,23 @@ ADMIN_BRANDING = {
     "SITE_TITLE": "Operations Admin",
 }
 ```
+
+### Optional login-page footer
+
+Set `FOOTER_LINES` to a list of strings. **One list item produces one line**, rendered in its own `<div>`, so HTML links, bold text, and other inline markup can be included. The footer appears on the Django admin **login page only**; it is not shown on authenticated admin pages. When `FOOTER_LINES` is omitted or empty, no custom footer is displayed.
+
+```python
+ADMIN_BRANDING = {
+    "FOOTER_LINES": [
+        "© 2026 My Company | London, ON, Canada",
+        'Website Development by <a href="https://example.com/" target="_blank" rel="noopener noreferrer"><strong>My Company</strong></a>',
+    ],
+}
+```
+
+By default, the background and text color inherit Django's header color variables, including dark-mode changes. Set `FOOTER_BACKGROUND_COLOR` and/or `FOOTER_TEXT_COLOR` to CSS color values (such as `"#417690"`) only when you need to override them; a fixed override will no longer automatically follow the theme.
+
+**Security:** Footer strings are rendered as **trusted HTML**. Only put HTML you control in `ADMIN_BRANDING`; never pass untrusted input, visitor content, or database fields into `FOOTER_LINES` without sanitization.
 
 ### Supported image locations
 
